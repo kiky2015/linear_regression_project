@@ -1,11 +1,11 @@
 
 # coding: utf-8
 
-# In[25]:
+# In[82]:
 
 
 # 任意选一个你喜欢的整数，这能帮你得到稳定的结果
-seed = 13
+seed = 15
 
 
 # # 欢迎来到线性回归项目
@@ -20,7 +20,9 @@ seed = 13
 # 
 # ## 1.1 创建一个 4*4 的单位矩阵
 
-# In[26]:
+# ## 1.2 返回矩阵的行数和列数
+
+# In[83]:
 
 
 # 这个项目设计来帮你熟悉 python list 和线性代数
@@ -47,19 +49,13 @@ I = [[1,2,3,4],
     [3,4,5,6],
     [3,4,5,6]]
 
-def generateMatrix():
-    a = [[0 for j in range(4)] for i in range(4)]
-    for i in range(4):
-        for j in range(4):
-            if i == j:
-                a[i][j] = 1
-                break
-    return a
+[[1, 0, 0, 0], 
+ [0, 1, 0, 0], 
+ [0, 0, 1, 0], 
+ [0, 0, 0, 1]]
 
 
-# ## 1.2 返回矩阵的行数和列数
-
-# In[27]:
+# In[84]:
 
 
 # TODO 返回矩阵的行数和列数
@@ -67,7 +63,7 @@ def shape(M):
     return len(M),len(M[0])
 
 
-# In[28]:
+# In[85]:
 
 
 # 运行以下代码测试你的 shape 函数
@@ -76,7 +72,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_shape')
 
 # ## 1.3 每个元素四舍五入到特定小数数位
 
-# In[29]:
+# In[86]:
 
 
 # TODO 每个元素四舍五入到特定小数数位
@@ -88,7 +84,7 @@ def matxRound(M, decPts=4):
             M[i][j] = round(M[i][j],decPts)
 
 
-# In[30]:
+# In[87]:
 
 
 # 运行以下代码测试你的 matxRound 函数
@@ -97,7 +93,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_matxRound'
 
 # ## 1.4 计算矩阵的转置
 
-# In[31]:
+# In[88]:
 
 
 # TODO 计算矩阵的转置
@@ -106,7 +102,7 @@ def transpose(M):
     return [list(col) for col in zip(*M)]
 
 
-# In[32]:
+# In[89]:
 
 
 # 运行以下代码测试你的 transpose 函数
@@ -115,7 +111,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_transpose'
 
 # ## 1.5 计算矩阵乘法 AB
 
-# In[33]:
+# In[90]:
 
 
 # TODO 计算矩阵乘法 AB，如果无法相乘则raise ValueError
@@ -128,14 +124,11 @@ def matxMultiply(A, B):
     new_AB = [[0 for j in range(n2[1])] for i in range(n1[0])]
     for i in range(n1[0]):
         for j in range(n2[1]):
-            tmp = [x*y for x,y in zip(A[i],new_B[j])]
-            for k in tmp:
-                new_AB[i][j] += k
-                    
+            new_AB[i][j] = sum(a*b for a,b in zip(A[i],new_B[j]))         
     return new_AB
 
 
-# In[34]:
+# In[91]:
 
 
 # 运行以下代码测试你的 matxMultiply 函数
@@ -169,7 +162,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_matxMultip
 #     ...    & ... & ... & ...& ...\\
 #     a_{n1}    & a_{n2} & ... & a_{nn} & b_{n} \end{bmatrix}$
 
-# In[35]:
+# In[92]:
 
 
 # TODO 构造增广矩阵，假设A，b行数相同
@@ -177,7 +170,7 @@ def augmentMatrix(A, b):
     return [ra + rb for ra,rb in zip(A,b)]
 
 
-# In[36]:
+# In[93]:
 
 
 # 运行以下代码测试你的 augmentMatrix 函数
@@ -189,7 +182,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_augmentMat
 # - 把某行乘以一个非零常数
 # - 把某行加上另一行的若干倍：
 
-# In[37]:
+# In[94]:
 
 
 # TODO r1 <---> r2
@@ -198,14 +191,14 @@ def swapRows(M,r1,r2):
     M[r1],M[r2] = M[r2],M[r1]
 
 
-# In[38]:
+# In[95]:
 
 
 # 运行以下代码测试你的 swapRows 函数
 get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_swapRows')
 
 
-# In[39]:
+# In[96]:
 
 
 # TODO r1 <--- r1 * scale
@@ -219,14 +212,14 @@ def scaleRow(M, r, scale):
         M[r][i] *= scale   
 
 
-# In[40]:
+# In[97]:
 
 
 # 运行以下代码测试你的 scaleRow 函数
 get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_scaleRow')
 
 
-# In[41]:
+# In[98]:
 
 
 # TODO r1 <--- r1 + r2*scale
@@ -237,7 +230,7 @@ def addScaledRow(M, r1, r2, scale):
         M[r1][i] += M[r2][i] * scale
 
 
-# In[42]:
+# In[99]:
 
 
 # 运行以下代码测试你的 addScaledRow 函数
@@ -271,6 +264,9 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_addScaledR
 # ### 2.3.2 算法推演
 # 
 # 为了充分了解Gaussian Jordan消元法的计算流程，请根据Gaussian Jordan消元法，分别手动推演矩阵A为***可逆矩阵***，矩阵A为***奇异矩阵***两种情况。
+# #教学视频中没有教过本人也根本不懂什么双击缺省零矩阵区域，进入Markdown的编辑模式，然后修改对应位置的数字，完成后按下ctrl+enter来渲染LaTeX
+# #本人只是把txt中的推演复制过来而已，又因行数太多，省略掉一些中间过程方便查看结果。
+# 
 # A为***可逆矩阵***
 # 1 3 1 11
 # 2 1 1 8
@@ -301,7 +297,7 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_addScaledR
 # 0 0 0 -1/3
 # 
 
-# In[43]:
+# In[100]:
 
 
 # 不要修改这里！
@@ -344,7 +340,7 @@ printInMatrixFormat(Ab,padding=4,truncating=0)
 #     
 # $...$
 
-# In[44]:
+# In[101]:
 
 
 # 不要修改这里！
@@ -387,7 +383,7 @@ printInMatrixFormat(Ab,padding=4,truncating=0)
 
 # ### 2.3.3 实现 Gaussian Jordan 消元法
 
-# In[45]:
+# In[102]:
 
 
 # TODO 实现 Gaussain Jordan 方法求解 Ax = b
@@ -408,12 +404,18 @@ def gj_Solve(A,B,epsilon=1.0e-8):
     C = augmentMatrix(A,B)
     matxRound(C)
     for col in range(n[0]):
-        #使用第一个行变换，将绝对值最大值所在行交换到对角线元素所在行（行c） 
+        #当前列为列c
+        #寻找列c中 对角线以及对角线以下所有元素（行 c~N）的绝对值的最大值
+        maxValueRow = col
         for row in range(n[1]):
-            if row > col and abs(C[row][col]) > abs(C[col][col]):
-                swapRows(C,row,col)
-        if abs(C[col][col]) < epsilon:
+            if row > maxValueRow and abs(C[row][col]) > abs(C[maxValueRow][col]):
+                maxValueRow = row;
+        #如果绝对值最大值为0
+        if abs(C[maxValueRow][col]) < epsilon:
             return None
+        #使用第一个行变换，将绝对值最大值所在行交换到对角线元素所在行（行c） 
+        if maxValueRow != col:
+            swapRows(C,maxValueRow,col)
         #使用第二个行变换，将列c的对角线元素缩放为1
         scaleRow(C,col,1/C[col][col])
         #多次使用第三个行变换，将列c的其他元素消为0
@@ -425,7 +427,7 @@ def gj_Solve(A,B,epsilon=1.0e-8):
     return [[a] for a in m[n[0]]]
 
 
-# In[46]:
+# In[103]:
 
 
 # 运行以下代码测试你的 gj_Solve 函数
@@ -454,17 +456,11 @@ get_ipython().magic(u'run -i -e test.py LinearRegressionTestCase.test_gj_Solve')
 # - 考虑矩阵 Y 和 矩阵 A 的行列式
 # - 考虑矩阵 A 的某一列是其他列的线性组合
 
-# In[47]:
-
-
-#年底加班太多，没时间做，也无法理解方阵A怎么分成4个部分的。只理解1/|A| 当|A|为0时为奇异矩阵
-
-
 # # 3  线性回归
 
 # ## 3.1 随机生成样本点
 
-# In[48]:
+# In[104]:
 
 
 # 不要修改这里！
@@ -487,7 +483,7 @@ plt.show()
 # 
 # ### 3.2.1 猜测一条直线
 
-# In[49]:
+# In[105]:
 
 
 #TODO 请选择最适合的直线 y = mx + b
@@ -514,7 +510,7 @@ plt.show()
 # MSE = \frac{1}{n}\sum_{i=1}^{n}{(y_i - mx_i - b)^2}
 # $$
 
-# In[50]:
+# In[106]:
 
 
 # TODO 实现以下函数并输出所选直线的MSE
@@ -638,7 +634,7 @@ print(calculateMSE(X,Y,m,b))
 # 
 # 在3.3 中，我们知道线性回归问题等价于求解 $X^TXh = X^TY$ (如果你选择不做3.3，就勇敢的相信吧，哈哈)
 
-# In[54]:
+# In[111]:
 
 
 # TODO 实现线性回归
@@ -646,11 +642,14 @@ print(calculateMSE(X,Y,m,b))
 参数：X, Y
 返回：m，b
 '''
-#要怎么计算，根本不知道怎么弄，有提示没
+#X是一元数据，转成矩阵后，用X的转置矩阵与乘以本身不就是一行一列了，这样还怎么用高斯消元。
+#如果公式没问题，那X就不能直接转成矩阵，有文字图形描述的算法没。根本没学过，老是要弄这些奇怪的东西,还不能用自已的方法去实现。
 def linearRegression(X,Y):
-    M1 = transpose(X)
-    M2 = matxMultiply(M1,X)
-    M3 = matxMultiply(M1,Y)
+    X1 = [[i] for i in X]
+    Y1 = [[i] for i in Y]
+    M1 = transpose(X1)
+    M2 = matxMultiply(M1,X1)
+    M3 = matxMultiply(M1,Y1)
     return gj_Solve(M3 , M2)
    
 
